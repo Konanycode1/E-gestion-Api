@@ -8,6 +8,8 @@ const ArticleController = require('../controllers/articleController');  // On im
 const EmployeController = require('../controllers/employeController');  // On importe le controller chargé de faire du CRUD des employés
 const RoleController = require('../controllers/roleController');
 const ArticleSortantController =require('../controllers/articleSortantController');
+const Auth = require('../middleware/auth')
+
 
 // les routes
 Router.get('/', IndexController.dashboard);

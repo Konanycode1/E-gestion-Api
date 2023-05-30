@@ -48,7 +48,7 @@ class AdminController {
                  .then((pass) => {
                     if(!pass) return res.status(401).json({msg:"Mot de passe incorrect !!"})
                     res.status(200).json({
-                        adminId:data._id,
+                        userId:data._id,
                         status: data.reference,
                         token: jwt.sign({adminId:data._id},
                             "RANDOM_TOKEN_KEY",
