@@ -4,28 +4,18 @@ const express = require('express');
 const Router = express.Router();
 
 const IndexController = require('../controllers/indexController');
-// On importe le controller chargé de faire du CRUD des administrateur (Patron et employés)
 const AdminController = require('../controllers/adminController');
-// On importe le controller chargé de faire du CRUD des stockes
 const StockeController = require('../controllers/stockeController');
-// On importe le controller chargé de faire du CRUD des catégories
 const CategorieController = require('../controllers/categorieController');
-// On importe le controller chargé de faire du CRUD des articles
 const ArticleController = require('../controllers/articleController');
-// On importe le controller chargé de faire du CRUD des employés
 const EmployeController = require('../controllers/employeController');
 
-// On définit la route permettant d'acéder à la page d'accueil de l'administrateur principal
+// les routes
 Router.get('/', IndexController.dashboard);
-// On définit la route post permettant d'enregistrer un nouveau d'administrateur
-Router.post('/createAdmin', AdminController.create);
-// On définit la route post permettant d'enregistrer un nouveau stocke
+Router.post('/createAdmin/', AdminController.create);
+Router.post('/loginAdmin/', AdminController.login);
 Router.post('/createStocke', StockeController.create);
-// On définit la route post permettant d'enregistrer une nouvelle catégorie
 Router.post('/createCategorie', CategorieController.create);
-// On définit la route post permettant d'enregistrer un nouveau article
 Router.post('/createArticle', ArticleController.create);
-// 
-Router.post('/createEmploye', EmployeController.create)
-// En fin on exporte l'instance Router de la class express pour pouvoir l'utiliser à d'autre fin
+Router.post('/createEmploye', EmployeController.create);
 module.exports = Router

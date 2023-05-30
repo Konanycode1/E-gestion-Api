@@ -12,7 +12,7 @@ const adminSchema = mongoose.Schema(
         },
        
         email: {
-            type: Number,
+            type: String,
             required: [true,"Veuillez définir l'adresse email de l'admin !"]
         },
         telephone: {
