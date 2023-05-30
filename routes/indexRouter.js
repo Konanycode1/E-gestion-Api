@@ -17,6 +17,8 @@ Router.post('/createAdmin/', AdminController.create);
 Router.post('/loginAdmin/', AdminController.login);
 Router.put('/updateAdmin/:id', AdminController.update);
 Router.delete('/deleteAdmin/:id', AdminController.delete);
+Router.get('/allAdmin/', AdminController.allRecup);
+Router.get('/oneAdmin/:id', AdminController.recupId);
 Router.post('/createStocke', StockeController.create);
 Router.post('/createCategorie', CategorieController.create);
 Router.post('/createArticle', ArticleController.create);

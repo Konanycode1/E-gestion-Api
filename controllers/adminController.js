@@ -65,21 +65,21 @@ class AdminController {
 
     static async update(req,res){
         try {
-            Admin.findOne({ _id: req.params.id})
+            Admin.findOne({ _id:req.params.id})
             .then((data)=>{
                 if(data){
-                    bcrypt.hash(req.body.password)
+                    bcrypt.hash(req.body.password,10)
                     .then((hash) => {
                         let updat = {
                             ...req.body,
                             password: hash
                         }
                         Admin.updateOne({_id: req.params.id},{...updat,_id:req.params._id})
-                        .then(()=> res.status(201).json({msg: "Modification effectué avec succès"}))
-                        .catch((error)=> res.status(401).json({error: error.message}))
+                        .then(()=>{
+                            res.status(201).json({msg: "Modification effectué avec succès"})})
+                        .catch((error)=> res.status(404).json({error: error.message}))
                     })
-                    .catch((error)=> res.status(401).json({}))
-                  
+                    .catch((error)=>res.status(401).json({}))
                 }
                 else res.status(401).json({msg: "Compte introuvable !!!"})
             })
@@ -90,7 +90,31 @@ class AdminController {
         }
     }
     static async delete (req, res){
-        Admin.deleteOne({email:req.params.id})
+        try {
+            Admin.deleteOne({_id:req.params.id})
+            .then((()=>res.status(201).json({msg:"Admin supprimé !!"})))
+            .catch((error)=> res.status(404).json({error: error.message}))
+        } catch (error) {
+            res.status(500).json({error: error.message})
+        }
+    }
+    static async allRecup(req, res){
+        try {
+            Admin.find()
+            .then((data)=> res.status(201).json({data}))
+            .catch((error) => res.status(404).json({error: error.message}));
+        } catch (error) {
+            res.status(500).json({error: error.message})
+        }
+    }
+    static async recupId(req,res){
+        try {
+            Admin.findOne({_id: req.params.id})
+            .then((data)=> res.status(201).json({data}))
+            .catch((error)=> res.status(404).json({error: error.message}))
+        } catch (error) {
+            res.status(500).json({error: error.message})
+        }
     }
 
 }
