@@ -18,14 +18,14 @@ const EmployeController = require('../controllers/employeController');
 // On définit la route permettant d'acéder à la page d'accueil de l'administrateur principal
 Router.get('/', IndexController.dashboard);
 // On définit la route post permettant d'enregistrer un nouveau d'administrateur
-Router.post('/create.admin', AdminController.create);
+Router.post('/createAdmin', AdminController.create);
 // On définit la route post permettant d'enregistrer un nouveau stocke
-Router.post('/create.stocke', StockeController.create);
+Router.post('/createStocke', StockeController.create);
 // On définit la route post permettant d'enregistrer une nouvelle catégorie
-Router.post('/create.categorie', CategorieController.create);
+Router.post('/createCategorie', CategorieController.create);
 // On définit la route post permettant d'enregistrer un nouveau article
-Router.post('/create.article', ArticleController.create);
+Router.post('/createArticle', ArticleController.create);
 // 
-Router.post('/create.employe', EmployeController.create)
+Router.post('/createEmploye', EmployeController.create)
 // En fin on exporte l'instance Router de la class express pour pouvoir l'utiliser à d'autre fin
 module.exports = Router

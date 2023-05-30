@@ -24,7 +24,7 @@ const categorieSchema = mongoose.Schema(
         etat: {
             type: String,
             required:true,
-            default: 'Vide'
+            default: ''
         }, 
         stockes:[
             {type: mongoose.Schema.Types.ObjectId, ref: Stocke}
