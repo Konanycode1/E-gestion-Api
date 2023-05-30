@@ -23,7 +23,7 @@ const stockeSchema = mongoose.Schema(
         etat: {
             type: String,
             required:true,
-            default: 'Vide'
+            default: true
         },
         admins:[
             {type: mongoose.Schema.Types.ObjectId, ref: Admin}

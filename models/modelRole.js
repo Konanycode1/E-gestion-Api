@@ -15,11 +15,6 @@ const roleSchema = mongoose.Schema(
             type: Number,
             required: true,
             default: 1
-        },
-        etat: {
-            type: String,
-            required:true,
-            default: 'Vide'
         }
     },
     {
