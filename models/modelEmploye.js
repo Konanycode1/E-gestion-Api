@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const Admin = require('./modelAdmin');
+const Role = require('./modelRole');
 // On définit le schema de model
 const employeSchema = mongoose.Schema(
     {
@@ -11,11 +13,11 @@ const employeSchema = mongoose.Schema(
             required: [true,"Veuillez définir le nom de l'employé !"]
         },
         email: {
-            type: Number,
+            type: String,
             required: [true,"Veuillez définir l'adresse email de l'employé !"]
         },
         telephone: {
-            type: String,
+            type: Number,
             required: [true,"Veuillez définir l'adresse téléphonique de l'employé !"]
         },
         password: {
@@ -31,11 +33,12 @@ const employeSchema = mongoose.Schema(
             required: true,
             default: 1
         },
-        etat: {
-            type: String,
-            required:true,
-            default: 'Vide'
-        }
+        admins:[
+            {type: mongoose.Schema.Types.ObjectId, ref: Admin}
+        ],
+        roles:[
+            {type: mongoose.Schema.Types.ObjectId, ref: Role}
+        ]
     },
     {
         timesTamps: true

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Admin = require('./modelAdmin');
 // On définit le schema de model
 const roleSchema = mongoose.Schema(
     {
@@ -15,7 +16,10 @@ const roleSchema = mongoose.Schema(
             type: Number,
             required: true,
             default: 1
-        }
+        },
+        admins:[
+            {type: mongoose.Schema.Types.ObjectId, ref: Admin}
+        ]
     },
     {
         timesTamps: true

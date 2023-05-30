@@ -19,4 +19,3 @@ const indexRoute = require('./routes/indexRouter');
 app.use('/api/',indexRoute);
 const {mongoose} = require('./paramConnectDB');
 app.listen(port, ()=>{console.log(`Le server est est bien démarré sur le port ${port}. Ouvrez le lient http://localhost:${port} pour voir le message`)});
-
