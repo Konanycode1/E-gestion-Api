@@ -14,4 +14,3 @@ app.use('/api/',indexRoute);
 const {mongoose} = require('./paramConnectDB');
 // On écoute le server sur le port 3000 grâce à la méthode listen d'express et on envoie un message. Le message est facultatif
 app.listen(port, ()=>{console.log(`Le server est est bien démarré sur le port ${port}. Ouvrez le lient http://localhost:${port} pour voir le message`)});
-
