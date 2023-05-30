@@ -15,7 +15,8 @@ const Auth = require('../middleware/auth')
 Router.get('/', IndexController.dashboard);
 Router.post('/createAdmin/', AdminController.create);
 Router.post('/loginAdmin/', AdminController.login);
-Router.put('/updateAdmin/', AdminController.update);
+Router.put('/updateAdmin/:id', AdminController.update);
+Router.delete('/deleteAdmin/:id', AdminController.delete);
 Router.post('/createStocke', StockeController.create);
 Router.post('/createCategorie', CategorieController.create);
 Router.post('/createArticle', ArticleController.create);

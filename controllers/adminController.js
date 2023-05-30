@@ -65,15 +65,21 @@ class AdminController {
 
     static async update(req,res){
         try {
-            Admin.findOne({ email: req.body.email})
+            Admin.findOne({ _id: req.params.id})
             .then((data)=>{
                 if(data){
-                    let updat = {
-                        email: email,
-                        ...req.body
-                    }
-                    Admin.updateOne({email: req.body.email},{...updat,email:req.body.email})
-                    .then(()=> res.status(201).json({msg: "Modification effectué avec succès"}))
+                    bcrypt.hash(req.body.password)
+                    .then((hash) => {
+                        let updat = {
+                            ...req.body,
+                            password: hash
+                        }
+                        Admin.updateOne({_id: req.params.id},{...updat,_id:req.params._id})
+                        .then(()=> res.status(201).json({msg: "Modification effectué avec succès"}))
+                        .catch((error)=> res.status(401).json({error: error.message}))
+                    })
+                    .catch((error)=> res.status(401).json({}))
+                  
                 }
                 else res.status(401).json({msg: "Compte introuvable !!!"})
             })
@@ -82,6 +88,9 @@ class AdminController {
         } catch (error) {
             
         }
+    }
+    static async delete (req, res){
+        Admin.deleteOne({email:req.params.id})
     }
 
 }
