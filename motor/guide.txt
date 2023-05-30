@@ -1,0 +1,23 @@
+=> On crée le package.json grâce à la commande suivante: npm init -y
+=> Dans la racie du projet, on crée un fichier d'extension .js qui sera le fichier de référence et c'est par ce fichier qu'on va démarrer le server(application). Dans mon cas il sagit du fichier server.js
+=> On définit ce fichier dans le contenu du fichier package.json plus précisement au niveau de la propriété script
+=> Après avoir définis server.js dans package.json, on lance le server grâce à la commande suivante: npm run serve
+
+====================================================================================================================
+==================================================== EXPRESS JS ====================================================
+====================================================================================================================
+=> On installe expressJs grâce à l'une des commandes suivantes: <npm i express> ou <npm install express>
+    Lors de l'installation express un dossier node_modules et un ficher package-lock.json vont s'ajouter automatiquement dans votre projet. Je vous appele que le contenu de ce dossier ne doit pas être nodifier et n'ouvrez jamis ce dossier
+
+=> Dans notre fichier server.js on importe le module express et on le stocke dans une variable ou constance comme bon le semble
+=> Dans notre fichier server.js on crée en suite une variable ou constance qui sera une instance d'express. Dans mon cas cette viriable va se nommée <app>
+
+=> Installons nodemon grâce à la commande suivante: <npm i nodemon -D>
+    nodemon met à jour le server de namière automatique
+    Après installation de nodemon, on le définit dans le contenu du fichier package.json
+
+
+====================================================================================================================
+==================================================== Mongoosedb ====================================================
+====================================================================================================================
+=> On installe par la suite mongoose grâce à la commande suivante: <npm i mongoose
