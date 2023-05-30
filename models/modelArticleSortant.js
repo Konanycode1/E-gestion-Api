@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Stocke = require('./modelStocke');
 const Categorie = require('./modelCategorie');
 const Article = require('./modelArticle');
-const Admin = require('./modelAdmin');
+const Employe = require('./modelEmploye');
 // On définit le schema de model article (table articles)
 const articleSortantSchema = mongoose.Schema(
     {
@@ -35,8 +35,8 @@ const articleSortantSchema = mongoose.Schema(
         articles:[
             {type: mongoose.Schema.Types.ObjectId, ref: Article}
         ],
-        admins:[
-            {type: mongoose.Schema.Types.ObjectId, ref: Admin}
+        employes:[
+            {type: mongoose.Schema.Types.ObjectId, ref: Employe}
         ]
     },
     {
