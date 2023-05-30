@@ -9,7 +9,7 @@ let port = process.env.PORT || 3000;
 // On importe nos routes défini dans le fichier indexRouter.js
 const indexRoute = require('./routes/indexRouter');
 // On défini un midelewere des routage
-app.use(indexRoute);
+app.use('/api/',indexRoute);
 // On importe la connexion
 const {mongoose} = require('./paramConnectDB');
 // On écoute le server sur le port 3000 grâce à la méthode listen d'express et on envoie un message. Le message est facultatif
