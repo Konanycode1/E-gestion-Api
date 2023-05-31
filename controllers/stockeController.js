@@ -1,14 +1,6 @@
 const Stocke = require('../models/modelStocke');
 const Admin = require('../models/modelAdmin');
 const auth = require('../middleware/auth');
-<<<<<<< HEAD
-const Categorie = require('../models/modelCategorie')
-class StockeController {
-    static async create(req, res){
-        let format = 100;
-
-        try {
-=======
 class StockeController {
     static async create(req, res){
         let reference = 100;
@@ -19,7 +11,6 @@ class StockeController {
                     reference = Number(allStocke[allStocke.length-1].reference.split('K')[1])+1;
                 }
             })
->>>>>>> gestAPI
             Admin.findOne({_id:req.auth.userId})
             .then((data)=>{
                 if(!data){
@@ -29,11 +20,7 @@ class StockeController {
                 else{
                     let stok = new Stocke ({
                         libelle:req.body.libelle,
-<<<<<<< HEAD
-                        reference:`stok${format++}`,
-=======
                         reference:`STOCK${reference}`,
->>>>>>> gestAPI
                         montant: req.body.montant,
                         satut:1,
                         etat: true,
@@ -41,22 +28,12 @@ class StockeController {
                     })
                     stok.save()
                     .then(()=> res.status(200).json({msg: "Stocke ajouté !!"}))
-<<<<<<< HEAD
-                    .catch((error)=> res.status(401).json({error: error.message}))
-                }
-
-            })
-            .catch((error)=> res.status(500).json({error: error.message}))
-           
-        } catch (error) {
-=======
                     .catch((error)=> res.status(401).json({error: error.message}));
                 }
             })
             .catch((error)=> res.status(500).json({error: error.message}));
            
         } catch (error){
->>>>>>> gestAPI
             console.log(error.massege, 'erer');
             res.status(500).json({message: error.massege});
         }
