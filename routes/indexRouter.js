@@ -22,6 +22,9 @@ Router.post('/createEmploye', EmployeController.create);
 Router.post('/createArticleSortant', ArticleSortantController.create);    // On définit la route post permettant d'enregistrer les articles vendus
 Router.post('/createRole', RoleController.create);    // On définit la route post permettant d'enregistrer un nouveau rôle
 Router.post('/login', LoginController.login)    // On définit la route post permettant de se connecter
-Router.get('/getAllStocke', Auth, StockeController.read)    // On définit la route post permettant de se connecter
+Router.get('/getAllStocke', Auth, StockeController.read)    // On définit la route get permettant de récupérer tout les stockes
+Router.get('/getStockeById/:id', Auth, StockeController.indexById)    // On définit la route get permettant de récupérer un seul stocke via son idenfitiant unique
+Router.get('/getStockeByRef/:reference', Auth, StockeController.indexByRef)    // On définit la route get permettant de récupérer un seul stocke via son idenfitiant unique
+// Router.post('/updateStocke/', Auth, StockeController.update);
 
 module.exports = Router;    // En fin on exporte l'instance Router de la class express pour pouvoir l'utiliser à d'autre fin
