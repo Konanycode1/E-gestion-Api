@@ -1,8 +1,6 @@
 const mongoose = require('mongoose');
 const Admin = require('./modelAdmin');
-const Stocke = require('./modelStocke');
-// On définit le schema de model
-const categorieSchema = mongoose.Schema(
+const categorieSchema = mongoose.Schema(    // On définit le schema de model
     {
         reference: {
             type: String,
@@ -12,10 +10,6 @@ const categorieSchema = mongoose.Schema(
             type: String,
             required: [true, 'Veuillez définir le libelle de la catégorie !']
         },
-        resume: {
-            type: String,
-            required: false
-        },
         statut: {
             type: Number,
             required: true,
@@ -24,12 +18,9 @@ const categorieSchema = mongoose.Schema(
         etat: {
             type: String,
             required:true,
-            default: ''
-        }, 
-        stockes:[
-            {type: mongoose.Schema.Types.ObjectId, ref: Stocke}
-        ],
-        admin:[
+            default: true
+        },
+        admins:[
             {type: mongoose.Schema.Types.ObjectId, ref: Admin}
         ]
     },
