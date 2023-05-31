@@ -23,7 +23,11 @@ Router.post('/createStocke/', Auth, StockeController.create);
 Router.post('/createCategorie', CategorieController.create);
 Router.post('/createStocke', Auth, StockeController.create);
 Router.post('/createCategorie', Auth, CategorieController.create);
-Router.post('/createArticle', ArticleController.create);
+Router.post('/createArticle/',Auth, ArticleController.create);
+Router.put('/updateArticle/:id',Auth, ArticleController.update);
+Router.get('/readArticle/:id',Auth, ArticleController.read);
+Router.get('/readAllArticle/',Auth, ArticleController.readAll);
+Router.delete('/deleteArticle/:id',Auth, ArticleController.delete);
 Router.post('/createEmploye', EmployeController.create);
 Router.post('/createArticleSortant', ArticleSortantController.create);    // On définit la route post permettant d'enregistrer les articles vendus
 Router.post('/createRole', RoleController.create);    // On définit la route post permettant d'enregistrer un nouveau rôle
