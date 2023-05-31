@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Admin = require('./modelAdmin');
+const Categorie = require('./modelCategorie');
 // On définit le schema de model
 const stockeSchema = mongoose.Schema(
     {
@@ -25,6 +26,9 @@ const stockeSchema = mongoose.Schema(
             required:true,
             default: true
         },
+        categories:[
+            {type: mongoose.Schema.Types.ObjectId, ref: Categorie}
+        ],
         admins:[
             {type: mongoose.Schema.Types.ObjectId, ref: Admin}
         ]

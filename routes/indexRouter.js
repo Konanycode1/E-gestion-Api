@@ -8,19 +8,21 @@ const ArticleController = require('../controllers/articleController');  // On im
 const EmployeController = require('../controllers/employeController');  // On importe le controller chargé de faire du CRUD des employés
 const RoleController = require('../controllers/roleController');
 const ArticleSortantController =require('../controllers/articleSortantController');
-const Auth = require('../middleware/auth')
+const Auth = require('../middleware/auth');
+const LoginController = require('../controllers/loginController');
+
 
 
 // les routes
 Router.get('/', IndexController.dashboard);
 Router.post('/createAdmin/', AdminController.create);
 Router.post('/loginAdmin/', AdminController.login);
-Router.post('/createStocke', StockeController.create);
+Router.post('/createStocke', Auth, StockeController.create);
 Router.post('/createCategorie', CategorieController.create);
 Router.post('/createArticle', ArticleController.create);
 Router.post('/createEmploye', EmployeController.create);
 Router.post('/createArticleSortant', ArticleSortantController.create);    // On définit la route post permettant d'enregistrer les articles vendus
 Router.post('/createRole', RoleController.create);    // On définit la route post permettant d'enregistrer un nouveau rôle
-module.exports = Router
+Router.post('/login', LoginController.login)
 
 module.exports = Router;    // En fin on exporte l'instance Router de la class express pour pouvoir l'utiliser à d'autre fin
