@@ -11,14 +11,12 @@ const ArticleSortantController =require('../controllers/articleSortantController
 const Auth = require('../middleware/auth');
 const LoginController = require('../controllers/loginController');
 
-
-
 // les routes
 Router.get('/', IndexController.dashboard);
 Router.post('/createAdmin/', AdminController.create);
 Router.post('/loginAdmin/', AdminController.login);
 Router.post('/createStocke', Auth, StockeController.create);
-Router.post('/createCategorie', CategorieController.create);
+Router.post('/createCategorie', Auth, CategorieController.create);
 Router.post('/createArticle', ArticleController.create);
 Router.post('/createEmploye', EmployeController.create);
 Router.post('/createArticleSortant', ArticleSortantController.create);    // On définit la route post permettant d'enregistrer les articles vendus
