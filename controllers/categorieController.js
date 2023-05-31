@@ -6,7 +6,7 @@ class CategorieController {
     static async create(req, res){
         let reference = 100;
         try {
-            Categorie.find()
+            Categorie.find({})
             .then(allCategorie=>{
                 if(allCategorie.length > 0){
                     reference = Number(allCategorie[allCategorie.length-1].reference.split('EG')[1])+1;

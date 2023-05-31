@@ -28,13 +28,37 @@ class StockeController {
                     })
                     stok.save()
                     .then(()=> res.status(200).json({msg: "Stocke ajouté !!"}))
-                    .catch((error)=> res.status(401).json({error: error.message}))
+                    .catch((error)=> res.status(401).json({error: error.message}));
                 }
-            }).catch((error)=> res.status(500).json({error: error.message}))
+            })
+            .catch((error)=> res.status(500).json({error: error.message}));
            
-        } catch (error) {
+        } catch (error){
             console.log(error.massege, 'erer');
-            res.status(500).json({message: error.massege})
+            res.status(500).json({message: error.massege});
+        }
+    }
+
+    static async read(req, res){
+        try{
+            Admin.findOne({_id:req.auth.userId})
+            .then(admin=>{
+                if(admin){
+                    Stocke.find({statut:1})
+                    .then(allStocke=> {
+                        console.log(allStocke);
+                        const msg = `Il y'a ${allStocke.length} élémnents disponible(s).`;
+                        res.status(200).json({msg: msg, data: allStocke});
+                    })
+                    .catch((error)=>{
+                        const msg = "Aucun élément trouvé";
+                        res.status(400).json({msg: msg, data: error.message});
+                    })
+                }
+            })
+            
+        }catch(error){
+            res.status(500).json({data: error.message});
         }
     }
 }
