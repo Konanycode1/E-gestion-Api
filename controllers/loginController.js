@@ -7,7 +7,6 @@ class LoginController {
     static async login(req, res){
     Admin.findOne({email: req.body.email})
     .then(admin => {
-      console.log('admin',admin)
       if(!admin){
         const message = "Ce compte n'existe pas."
         return res.status(400).json({message})

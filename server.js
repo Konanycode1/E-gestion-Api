@@ -19,15 +19,15 @@ app.use((req, res, next) => {
     next();
   });
 
-app.use(session({
-  name: "code",
-    secret: "something",
-    saveUninitialized: false,
-    resave: false,
-    cookie: {
-      maxAge: 1000 * 60 * 100
-    }
-}))
+// app.use(session({
+//   name: "code",
+//     secret: "something",
+//     saveUninitialized: false,
+//     resave: false,
+//     cookie: {
+//       maxAge: 1000 * 60 * 100
+//     }
+// }))
 
 let port = process.env.PORT || 3000;
 

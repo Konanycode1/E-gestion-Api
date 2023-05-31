@@ -21,12 +21,12 @@ Router.put('/updateAdmin/:id', AdminController.update);
 Router.delete('/deleteAdmin/:id', AdminController.delete);
 Router.get('/allAdmin/', AdminController.allRecup);
 Router.get('/oneAdmin/:id', AdminController.recupId);
-Router.post('/createStocke', Auth, StockeController.create);
+Router.post('/createStocke/', Auth, StockeController.create);
 Router.post('/createCategorie', CategorieController.create);
 Router.post('/createArticle', ArticleController.create);
 Router.post('/createEmploye', EmployeController.create);
 Router.post('/createArticleSortant', ArticleSortantController.create);    // On définit la route post permettant d'enregistrer les articles vendus
 Router.post('/createRole', RoleController.create);    // On définit la route post permettant d'enregistrer un nouveau rôle
-Router.post('/login', LoginController.login)
+// Router.post('/login', LoginController.login)
 
 module.exports = Router;    // En fin on exporte l'instance Router de la class express pour pouvoir l'utiliser à d'autre fin

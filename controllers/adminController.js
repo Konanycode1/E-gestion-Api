@@ -48,7 +48,7 @@ class AdminController {
                     res.status(200).json({
                         userId:data._id,
                         status: data.reference,
-                        token: jwt.sign({adminId:data._id},
+                        token: jwt.sign({userId:data._id,status: data.reference},
                             "RANDOM_TOKEN_KEY",
                             {expiresIn: 3600*24}
                             )

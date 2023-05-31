@@ -26,9 +26,6 @@ const stockeSchema = mongoose.Schema(
             required:true,
             default: true
         },
-        categories:[
-            {type: mongoose.Schema.Types.ObjectId, ref: Categorie}
-        ],
         admins:[
             {type: mongoose.Schema.Types.ObjectId, ref: Admin}
         ]
