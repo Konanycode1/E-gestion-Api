@@ -11,7 +11,6 @@ const roleSchema = mongoose.Schema(
             type: String,
             required: [true,"Veuillez définir le libellé du r^le !"]
         },
-        
         statut: {
             type: Number,
             required: true,

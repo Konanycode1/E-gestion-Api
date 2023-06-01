@@ -12,13 +12,12 @@ class CategorieController {
                     reference = Number(allCategorie[allCategorie.length-1].reference.split('EG')[1])+1;
                 }
             })
-            Admin.findOne({_id:req.auth.userId})
+            Admin.findOne({_id:req.auth.userId, statut:1})
             .then((data)=>{
                 if(!data){
                     res.status(404).json({msg: "Cet compte est introuvable , Veuillez vous connecter à nouveau"})
                     return
                 }else{
-                    
                     let categorie = new Categorie({
                         libelle:req.body.libelle,
                         reference:`CATEG${reference}`,
@@ -30,8 +29,8 @@ class CategorieController {
                     .then(()=> res.status(200).json({msg: "Catégorie ajouté !!"}))
                     .catch((error)=> res.status(401).json({error: error.message}))
                 }
-            }).catch((error)=> res.status(500).json({error: error.message}))
-           
+            })
+            .catch((error)=> res.status(500).json({error: error.message}));
         }catch (error) {
             console.log(error.massege, 'erer');
             res.status(500).json({message: error.massege})
@@ -57,7 +56,6 @@ class CategorieController {
                     return
                 }
             })
-            
         }catch(error){
             res.status(500).json({data: error.message});
         }
@@ -129,7 +127,6 @@ class CategorieController {
         }
     }
 
-
     static async update(req,res){
         try {
             Admin.findOne({_id:req.auth.userId})
@@ -154,12 +151,10 @@ class CategorieController {
                     }
                 })
                 .catch(error=> {
-                    console.log(error)
-                    res.status(404).json({error: error.message})
+                    console.log(error);
+                    res.status(404).json({error: error.message});
                 })
             })
-            
-            
         } catch (error) {
             console.log(error)
             res.status(400).json({error})
@@ -176,27 +171,26 @@ class CategorieController {
                     if(data){
                         Categorie.updateOne({id: req.body.id},{statut:0})
                         .then(()=>{
-                            res.status(201).json({msg: "Suppression effectué avec succès !!"})})
+                            res.status(201).json({msg: "Suppression effectué avec succès !!"});
+                        })
                         .catch((error)=> {
-                            console.log(error)
-                            res.status(404).json({error: error.message})
+                            console.log(error);
+                            res.status(404).json({error: error.message});
                         })
                     }
                     else{
                         console.log('Compte introuvable');
-                        res.status(401).json({msg: "Compte introuvable !!!"})
+                        res.status(401).json({msg: "Compte introuvable !!!"});
                     }
                 })
                 .catch(error=> {
-                    console.log(error)
-                    res.status(404).json({error: error.message})
+                    console.log(error);
+                    res.status(404).json({error: error.message});
                 })
             })
-            
-            
         } catch (error) {
-            console.log(error)
-            res.status(400).json({error})
+            console.log(error);
+            res.status(400).json({error});
         }
     }
 }

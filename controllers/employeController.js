@@ -1,38 +1,53 @@
 const Admin = require('../models/modelAdmin');
 const Employe = require('../models/modelEmploye')
+const bcrypt = require('bcrypt');
 class EmployeController {
-    static async create(req, res){
-        let reference = 100;
+   static async create(req, res){
         try {
+            let reference = 100;
             Employe.find({})
-            .then(allEmploye=>{
-                if(allEmploye.length > 0){
-                    reference = Number(allEmploye[allEmploye.length-1].reference.split('MPL')[1])+1;
+            .then(allCategorie=>{
+                if(allCategorie.length > 0){
+                    reference = Number(allCategorie[allCategorie.length-1].reference.split('MPL')[1])+1;
                 }
             })
             Admin.findOne({_id:req.auth.userId})
-            .then((data)=>{
-                if(!data){
-                    res.status(404).json({msg: "Cet compte est introuvable , Veuillez vous connecter à nouveau"})
-                    return
-                }else{
-                    
-                    let categorie = new Employe({
-                        libelle:req.body.libelle,
-                        reference:`EMPL${reference}`,
-                        satut:1,
-                        etat: true,
-                        admins:data._id
+            .then((data) =>{
+                if(data){
+                    Employe.find({email: req.body.email})
+                    .then(employe=>{
+                        if(employe.length===0){
+                            const chiffre = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
+                            if(req.body.telephone.toString().length===10 && req.body.telephone.toString().split('').every(item=>chiffre.includes(Number(item)))){
+                                bcrypt.hash("123456", 10)
+                                .then((hash)=>{
+                                    let newEmploye = new Employe({
+                                        ... req.body,
+                                        reference: `EMPL${reference}`,
+                                        admins: req.auth.userId,
+                                        roles: req.body.roles,
+                                        password: hash,
+                                        statut: 1,
+                                    })
+                                    newEmploye.save()
+                                    .then(()=> res.status(200).json({msg:"Employé ajouté avec succès"}))
+                                    .catch((error)=> res.status(400).json({error:error.message}))
+                                })
+                                .catch((error)=>res.status(401).json({error:error.message}))
+                            }else{
+                                res.status(400).json({msg: "L'adresse téléphonique réquière exactement 10 chiffres."})
+                            }
+                        }else{
+                            res.status(401).json({msg: "Ce compte est déjà utilisé."})
+                        }
                     })
-                    Employe.save()
-                    .then(()=> res.status(200).json({msg: "Catégorie ajouté !!"}))
-                    .catch((error)=> res.status(401).json({error: error.message}))
+                    
+                }else{
+                    res.status(401).json({msg:"Cet compte existe déjà, veuillez vous connectez"})
                 }
-            }).catch((error)=> res.status(500).json({error: error.message}))
-           
-        }catch (error) {
-            console.log(error.massege, 'erer');
-            res.status(500).json({message: error.massege})
+            })
+        } catch (error) {
+            res.status(500).json({message: error.message})
         }
     }
 
