@@ -36,7 +36,8 @@ class RoleController {
 
     static async read(req, res){
         try{
-            Admin.findOne({_id:req.auth.userId, statut:1})
+            console.log(req.auth.userId)
+        Admin.findOne({_id:req.auth.userId/*, statut:1*/})
             .then(admin=>{
                 if(admin){
                     Role.find({statut:1})
@@ -70,7 +71,7 @@ class RoleController {
                             res.status(200).json({msg: msg});
                         }else{
                             const msg = `Un élément est trouvé.`;
-                            res.status(200).json({msg: msg,data: Role});
+                            res.status(200).json({msg: msg, data: role});
                         }
                     })
                     .catch((error)=>{
@@ -90,6 +91,7 @@ class RoleController {
             res.status(500).json({msg: msg, data: error.message});
         }
     }
+
 
     static async indexByRef(req, res){  // On trouve en fonction de la référence du catégorie
         try{

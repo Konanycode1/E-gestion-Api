@@ -16,10 +16,11 @@ Router.get('/', IndexController.dashboard);
 Router.post('/createAdmin/', AdminController.create);
 Router.post('/loginAdmin/', AdminController.login);
 
+Router.put('/updateAdmin/:id', AdminController.update);
+Router.delete('/deleteAdmin/:id', AdminController.delete);
+Router.get('/allAdmin/', AdminController.allRecup);
+Router.get('/oneAdmin/:id', AdminController.recupId);
 Router.post('/createArticle', ArticleController.create);
-
-Router.post('/createArticleSortant', ArticleSortantController.create);    // On définit la route post permettant d'enregistrer les articles vendus
-Router.post('/login', LoginController.login)    // On définit la route post permettant de se connecter
 
 Router.post('/createStocke', Auth, StockeController.create);
 Router.get('/getAllStocke', Auth, StockeController.read)    // On définit la route get permettant de récupérer tout les stockes
@@ -48,5 +49,11 @@ Router.get('/getRoleById/:id', Auth, RoleController.indexById)    // On définit
 Router.get('/getRoleByRef/:reference', Auth, RoleController.indexByRef)    // On définit la route get permettant de récupérer un seul categorie via son idenfitiant unique
 Router.post('/updateRole', Auth, RoleController.update);    // On définit la route ppermettant de modifier les categorie engéristrés
 Router.post('/deleteRole', Auth, EmployeController.delete);    // On définit la route ppermettant de modifier le status les catégories engéristrés (Le principe adopté est que si le statut du stocke est à 1 le stocke en question est considéré comme pas encore supprimé et à 0 le stocke est vue comme supprimé)
+
+Router.post('/createArticleSortant', ArticleSortantController.create);    // On définit la route post permettant d'enregistrer les articles vendus
+Router.post('/createArticleSortant', ArticleSortantController.create);    // On définit la route post permettant d'enregistrer les articles vendus
+Router.post('/createArticleSortant', ArticleSortantController.create);    // On définit la route post permettant d'enregistrer les articles vendus
+Router.post('/createArticleSortant', ArticleSortantController.create);    // On définit la route post permettant d'enregistrer les articles vendus
+Router.post('/createArticleSortant', ArticleSortantController.create);    // On définit la route post permettant d'enregistrer les articles vendus
 
 module.exports = Router;    // En fin on exporte l'instance Router de la class express pour pouvoir l'utiliser à d'autre fin
