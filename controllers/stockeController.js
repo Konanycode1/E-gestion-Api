@@ -23,7 +23,7 @@ class StockeController {
                         libelle:req.body.libelle,
                         reference:`STOCK${reference}`,
                         montant: req.body.montant,
-                        satut:1,
+                        statut:1,
                         etat: true,
                         admins:data._id
                     })
@@ -41,7 +41,7 @@ class StockeController {
 
     static async read(req, res){
         try{
-            Admin.findOne({_id:req.auth.userId})
+            Admin.findOne({_id:req.auth.userId, statut:1})
             .then(admin=>{
                 if(admin){
                     Stocke.find({statut:1})
@@ -131,40 +131,75 @@ class StockeController {
     }
 
 
-    // static async update(req, res){
-    //     try{
-    //         Admin.findOne({_id:req.auth.userId})
-    //         .then(admin=>{
-    //             if(admin){
-    //                 Stocke.findByIdAndUpdate(
-    //                     req.body.id,
-    //                     {
-    //                         libelle: req.body.libelle,
-    //                         montant: req.body.montant,
-    //                         admins: req.body.admins
-    //                     },
-    //                     {new: true},
-    //                     function(error, stock){
-    //                         if(error){
-    //                             console.log('Une erreur est survenue lors de la modification des données', error);
-    //                             res.status(500).json({data: error.message})
-    //                         }else{
-    //                             cosnsole.log('Modification effectuée avec succès', stock);
-    //                             const msg = 'Modification effectuée avec succès';
-    //                             res.status(200).json({msg: msg, data: stock});
-    //                         }
-    //                     }
-    //                 )
-    //             }
-    //         })
-    //         .then(error=>{
-    //             console.log('Vous n\'avez toutes les autorisation pour effectuer cette caction. Veuillez donc vous authentifier !', error);
-    //             const msg = 'Vous n\'avez toutes les autorisation pour effectuer cette caction. Veuillez donc vous authentifier !';
-    //             res.status(500).json({msg: msg, data: error.message})
-    //         })
-    //     }catch(errer){
-    //         // 
-    //     }
-    // }
+    static async update(req,res){
+        try {
+            Admin.findOne({_id:req.auth.userId})
+            .then(admin=>{
+                if(!admin) return res.json({msg: "Veuillez-vous authentifier !"});
+                Stocke.findOne({_d:req.body.id, statut:1})
+                .then((data)=>{
+                    if(data){
+                        let updat = {...req.body};
+                        Stocke.updateOne({id: req.body.id},{...updat,_id:req.body._id})
+                        .then((newData)=>{
+                            res.status(201).json({msg: "Modification effectué avec succès", newData: newData});
+                        })
+                        .catch((error)=> {
+                            console.log(error);
+                            res.status(404).json({error: error.message});
+                        })
+                    }
+                    else{
+                        console.log('Compte introuvable');
+                        res.status(401).json({msg: "Compte introuvable !!!"});
+                    }
+                })
+                .catch(error=> {
+                    console.log(error)
+                    res.status(404).json({error: error.message})
+                })
+            })
+            
+            
+        } catch (error) {
+            console.log(error)
+            res.status(400).json({error})
+        }
+    }
+
+
+    static async delete(req,res){
+        try {
+            Admin.findOne({_id:req.auth.userId})
+            .then(admin=>{
+                if(!admin) return res.json({msg: "Veuillez-vous authentifier !"});
+                Stocke.findOne({_d:req.body.id, statut:1})
+                .then((data)=>{
+                    if(data){
+                        Stocke.updateOne({id: req.body.id},{statut:0})
+                        .then((newData)=>{
+                            res.status(201).json({msg: "Suppression effectué avec succès !!"})})
+                        .catch((error)=> {
+                            console.log(error)
+                            res.status(404).json({error: error.message})
+                        })
+                    }
+                    else{
+                        console.log('Compte introuvable');
+                        res.status(401).json({msg: "Compte introuvable !!!"})
+                    }
+                })
+                .catch(error=> {
+                    console.log(error)
+                    res.status(404).json({error: error.message})
+                })
+            })
+            
+            
+        } catch (error) {
+            console.log(error)
+            res.status(400).json({error})
+        }
+    }
 }
 module.exports = StockeController;

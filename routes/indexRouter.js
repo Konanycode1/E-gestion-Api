@@ -25,6 +25,20 @@ Router.post('/login', LoginController.login)    // On définit la route post per
 Router.get('/getAllStocke', Auth, StockeController.read)    // On définit la route get permettant de récupérer tout les stockes
 Router.get('/getStockeById/:id', Auth, StockeController.indexById)    // On définit la route get permettant de récupérer un seul stocke via son idenfitiant unique
 Router.get('/getStockeByRef/:reference', Auth, StockeController.indexByRef)    // On définit la route get permettant de récupérer un seul stocke via son idenfitiant unique
-// Router.post('/updateStocke/', Auth, StockeController.update);
+Router.post('/updateStocke', Auth, StockeController.update);    // On définit la route ppermettant de modifier les stockes engéristrés
+Router.post('/deleteStocke', Auth, StockeController.delete);    // On définit la route ppermettant de modifier le status les stockes engéristrés (Le principe adopté est que si le statut du stocke est à 1 le stocke en question est considéré comme pas encore supprimé et à 0 le stocke est vue comme supprimé)
+
+Router.get('/getAllCategorie', Auth, CategorieController.read)    // On définit la route get permettant de récupérer tout les categories
+Router.get('/getCategorieById/:id', Auth, CategorieController.indexById)    // On définit la route get permettant de récupérer un seul categorie via son idenfitiant unique
+Router.get('/getCategorieByRef/:reference', Auth, CategorieController.indexByRef)    // On définit la route get permettant de récupérer un seul categorie via son idenfitiant unique
+Router.post('/updateCategorie', Auth, CategorieController.update);    // On définit la route ppermettant de modifier les categorie engéristrés
+Router.post('/deleteCategorie', Auth, CategorieController.delete);    // On définit la route ppermettant de modifier le status les catégories engéristrés (Le principe adopté est que si le statut du stocke est à 1 le stocke en question est considéré comme pas encore supprimé et à 0 le stocke est vue comme supprimé)
+
+
+Router.get('/getAllEmploye', Auth, EmployeController.read)    // On définit la route get permettant de récupérer tout les categories
+Router.get('/getEmployeById/:id', Auth, EmployeController.indexById)    // On définit la route get permettant de récupérer un seul categorie via son idenfitiant unique
+Router.get('/getEmployeByRef/:reference', Auth, EmployeController.indexByRef)    // On définit la route get permettant de récupérer un seul categorie via son idenfitiant unique
+Router.post('/updateEmploye', Auth, EmployeController.update);    // On définit la route ppermettant de modifier les categorie engéristrés
+Router.post('/deleteEmploye', Auth, EmployeController.delete);    // On définit la route ppermettant de modifier le status les catégories engéristrés (Le principe adopté est que si le statut du stocke est à 1 le stocke en question est considéré comme pas encore supprimé et à 0 le stocke est vue comme supprimé)
 
 module.exports = Router;    // En fin on exporte l'instance Router de la class express pour pouvoir l'utiliser à d'autre fin
