@@ -11,14 +11,14 @@ class articleController {
                     res.status(404).json({msg:"Compte introuvable !!"})
                     return
                 }
-                Stocke.findOne({reference:req.body.stockes})
+                Stocke.findOne({_id:req.body.stockes})
                 .then((stok) =>{
                     if(!stok){
                         res.status(404).json({msg: "Stocke introuvable !!"})
                         return 
                     }
                     else{
-                        Categorie.findOne({reference: req.body.categorie})
+                        Categorie.findOne({_id: req.body.categories})
                         .then((cate)=>{
                             if(!cate){
                                 res.status(404).json({msg: "Catégorie introuvable"})

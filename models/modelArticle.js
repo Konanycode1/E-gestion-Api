@@ -20,7 +20,17 @@ const articleSchema = mongoose.Schema(
         montant: {
             type: Number,
             required: [true, 'Veuillez définir le montant de l\'article !']
-        }, 
+        },
+        etat:{
+            type: Boolean,
+            default: true,
+            required: true
+        },
+        statut:{
+            type: Number,
+            default: 1,
+            required: true
+        },
         stockes:[
             {type: mongoose.Schema.Types.ObjectId, ref: Stocke}
         ],

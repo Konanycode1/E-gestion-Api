@@ -22,7 +22,7 @@ const articleSortantSchema = mongoose.Schema(
             type: Number,
             required: true
         },
-        mntant: {
+        montant: {
             type: Number,
             required: true
         }, 

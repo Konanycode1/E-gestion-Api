@@ -9,6 +9,8 @@ const EmployeController = require('../controllers/employeController');          
 const RoleController = require('../controllers/roleController');
 const ArticleSortantController =require('../controllers/articleSortantController');
 const Auth = require('../middleware/auth');
+const empAut = require('../middleware/empAut');
+const ConnexionController = require('../controllers/connexionController');
 
 // les routes
 Router.get('/', IndexController.dashboard);
@@ -55,10 +57,12 @@ Router.get('/getRoleByRef/:reference', Auth, RoleController.indexByRef)     // O
 Router.post('/updateRole', Auth, RoleController.update);                    // On définit la route ppermettant de modifier les categorie engéristrés
 Router.post('/deleteRole', Auth, EmployeController.delete);                 // On définit la route ppermettant de modifier le status les catégories engéristrés (Le principe adopté est que si le statut du stocke est à 1 le stocke en question est considéré comme pas encore supprimé et à 0 le stocke est vue comme supprimé)
 
-Router.post('/createArticleSortant', ArticleSortantController.create);      // On définit la route post permettant d'enregistrer les articles vendus
-Router.post('/createArticleSortant', ArticleSortantController.create);      // On définit la route post permettant d'enregistrer les articles vendus
-Router.post('/createArticleSortant', ArticleSortantController.create);      // On définit la route post permettant d'enregistrer les articles vendus
-Router.post('/createArticleSortant', ArticleSortantController.create);      // On définit la route post permettant d'enregistrer les articles vendus
-Router.post('/createArticleSortant', ArticleSortantController.create);      // On définit la route post permettant d'enregistrer les articles vendus
+Router.post('/createArticleSortant', empAut, ArticleSortantController.create);                        // On définit la route post permettant d'enregistrer les articles vendus
+// Router.get('/getAllArticleSortant', Auth, ArticleSortantController.read);                          // On définit la route post permettant d'enregistrer les articles vendus
+// Router.get('/getArticleSortantById/:id', Auth, ArticleSortantController.indexById);                // On définit la route post permettant d'enregistrer les articles vendus
+// Router.get('/getArticleSortantByRef/:reference', Auth, ArticleSortantController.indexByRef);       // On définit la route post permettant d'enregistrer les articles vendus
+// Router.post('/updateArticleSortant', Auth, ArticleSortantController.update);                        // On définit la route post permettant d'enregistrer les articles vendus
+
+Router.post('/loginEmploye', ConnexionController.login);
 
 module.exports = Router;    // En fin on exporte l'instance Router de la class express pour pouvoir l'utiliser à d'autre fin
