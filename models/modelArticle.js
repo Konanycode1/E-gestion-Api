@@ -5,6 +5,10 @@ const Categorie = require('./modelCategorie');
 // On définit le schema de model
 const articleSchema = mongoose.Schema(
     {
+        reference: {
+            type: String,
+            required: [true, 'Veuillez définir le référence de l\'article !']
+        },
         libelle: {
             type: String,
             required: [true, 'Veuillez définir le libelle de l\'article !']

@@ -4,7 +4,14 @@ const Categorie = require('../models/modelCategorie')
 const Stocke = require('../models/modelStocke')
 class articleController {
     static async create(req, res){
+        let reference = 100
         try {
+            Article.find({})
+            .then(allArticle=>{ // Cette fonctionnalité permet de générer une terminason unique pour la référence de chaque article
+                if(allArticle.length > 0){
+                    reference = Number(allArticle[allArticle.length-1].reference.split('RTC')[1])+1; // 
+                }
+            })
             Admin.findOne({_id: req.auth.userId})
             .then((data)=>{
                 if(!data){
@@ -27,6 +34,8 @@ class articleController {
                             else{
                                 let article = new Article({
                                     ...req.body,
+                                    reference: `ARTC${reference}`, // J'ai jugé bon d'ajouter une reéférence à chaque article ce qui va facilité la recherche à l'oeil nu
+                                    montant: req.body.quantite*req.body.prix_unitaire,
                                     stockes:stok._id,
                                     categorie:cate._id,
                                     admin:data._id

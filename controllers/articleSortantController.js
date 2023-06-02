@@ -1,6 +1,7 @@
 const ArticleSortant = require('../models/modelArticleSortant');
 const Article = require('../models/modelArticle');
 const Employe = require('../models/modelEmploye');
+const Admin = require('../models/modelAdmin');
 
 class ArticleSortantController{
     static async create(req, res){
@@ -16,22 +17,20 @@ class ArticleSortantController{
             .then(empl=>{
                 if(!empl) {
                     res.status(401).json({msg: 'Veuillez-vous connecter pour pouvoir effectuer cette action'});
-                    return
+                    return ;
                 }
-                
                 Article.findOne({_id: req.body.id})
                 .then(article=>{
                     if(!article){
                         res.status(400).json({msg: "Ce article n'est pas disponible"});
-                        return
-                    }
-                    if(article.quantite < req.body.quantite || article.quantite === 0) {
-                        res.status(400).json({msg: "La quantité est insuffisante, veuillez donc réduire la quantité !"});
                         return ;
                     }
-                    
+                    if(article.quantite < req.body.quantite || article.quantite === 0) {    // ici on vérifie si la quantité de l'article restant est supperieur ou égale à la quantité demandé ou il en reste encore 
+                        res.status(400).json({msg: "L'article est insuffisant, veuillez donc réduire la quantité !"});
+                        return ;
+                    }
                     let articleSortant = new ArticleSortant({
-                        reference: `ARSOT${reference}`,
+                        reference: article.reference /*`ARSOT${reference}`*/,
                         libelle: article.libelle,
                         quantite: req.body.quantite,
                         prix_unitaire: article.prix_unitaire,
@@ -57,8 +56,7 @@ class ArticleSortantController{
                                 }
                                 Article.updateOne({_id: req.body.id},updat)
                                 .then((newArt)=>{
-                                    console.log('newArt',newArt);
-                                    res.status(201).json({msg: "Modification effectué avec succès", newArt: newArt});
+                                    res.status(201).json({msg: "Modification effectué avec succès"});
                                 })
                                 .catch((error)=> {
                                     console.log('error',error);
@@ -75,6 +73,36 @@ class ArticleSortantController{
         } catch (error) {
             console.log(error.message);
             res.status(500).json({message: error.message});
+        }
+    }
+    
+    
+    static async read(req, res){
+        try{
+            Admin.findOne({_id: req.auth.id/*, statut: 1*/})
+            .then(admin=>{
+                if(!admin){ res.status(401).json({msg: "veuillez-vous authentifier pour avoir accès aux imnformations demandées"}); return;}
+                ArticleSortant.find({})
+                .then(articleSortant=>{
+                    res.status(200).json({msg: `${articleSortant.length} trouvé(s)`, data: articleSortant});
+                })
+                .catch(error=>{console.log(error.message); res.status(500).json({error:error.message})})
+            })
+            ArticleSortant.find({})
+            .then(articleSortant=>{
+                if(articleSortant.length === 0){
+                    res.status(400).json({msg: "Auncune donnée n'est disponible pour le moment, veuillez donc réessayer plus tard !"});
+                    return ;
+                }
+                const msg = `Nombre d'élément trouvé: ${articleSortant.length}`;
+                res.status(200).json({msg: msg, data: articleSortant});
+            })
+            .catch(error=>{
+
+            })
+        }catch(error){
+            console.log(error.message);
+            res.status(500).json(error.message);
         }
     }
 }
