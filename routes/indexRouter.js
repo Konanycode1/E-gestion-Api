@@ -7,7 +7,7 @@ const CategorieController = require('../controllers/categorieController');      
 const ArticleController = require('../controllers/articleController');          // On importe le controller chargé de faire du CRUD des articles
 const EmployeController = require('../controllers/employeController');          // On importe le controller chargé de faire du CRUD des employés
 const RoleController = require('../controllers/roleController');
-const ArticleSortantController =require('../controllers/articleSortantController');
+const ArticleSortantController = require('../controllers/articleSortantController');
 const Auth = require('../middleware/auth');
 const empAut = require('../middleware/empAut');
 const ConnexionController = require('../controllers/connexionController');
@@ -15,13 +15,14 @@ const ConnexionController = require('../controllers/connexionController');
 // les routes
 Router.get('/', IndexController.dashboard);
 
-Router.post('/loginAdmin/', AdminController.login);
+Router.post('/loginAdmin/', AdminController.login); 
 
-Router.post('/createAdmin/', AdminController.create);
-Router.put('/updateAdmin/:id', AdminController.update);
-Router.delete('/deleteAdmin/:id', AdminController.delete);
-Router.get('/allAdmin/', AdminController.allRecup);
-Router.get('/oneAdmin/:id', AdminController.recupId);
+Router.post('/createAdmin', Auth, AdminController.create);
+Router.put('/updateAdmin', Auth, AdminController.update);
+Router.delete('/deleteAdmin/:id', Auth, AdminController.delete);
+Router.get('/allAdmin/', Auth, AdminController.allRecup);
+Router.get('/oneAdmin/:id', Auth, AdminController.recupId); 
+Router.post('/updateForSuperAdmin', Auth, AdminController.updateForSuperAdmin);
 
 Router.post('/createArticle/',Auth, ArticleController.create);
 Router.put('/updateArticle/:id',Auth, ArticleController.update);

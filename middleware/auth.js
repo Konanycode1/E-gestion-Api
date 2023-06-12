@@ -3,16 +3,14 @@ module.exports = (req, res, next) => {
     try {
         let token = req.headers.authorization.split(" ")[1];
         let decodeToken = jwt.verify(token, 'RANDOM_TOKEN_KEY');
-        const userId =  decodeToken.userId
-        console.log("deco: ",decodeToken)
-        const status = decodeToken.status
-        req.auth ={
+        const userId =  decodeToken.userId;
+        const reference = decodeToken.reference;
+        req.auth = {
             userId: userId,
-            status: status
+            reference: reference
         }
         next();
     } catch (error) {
-        console.log(error.message)
         res.status(404).json({error: error.message})
     }
 }

@@ -6,38 +6,38 @@ class RoleController {
         try {
             Role.find({})
             .then(allRole=>{
+               
                 if(allRole.length > 0){
                     reference = Number(allRole[allRole.length-1].reference.split('OLE')[1])+1;
                 }
-            })
-            Admin.findOne({_id: req.auth.userId})
-            .then((data)=>{
-                if(data.length == 0){
-                    res.status(404).json({msg: "Cet compte est introuvable , Veuillez vous connecter à nouveau"})
-                    return
-                }else{
-                    let role = new Role({
-                        libelle:req.body.libelle,
-                        reference:`ROLE${reference}`,
-                        satut:1,
-                        admins:data._id
-                    })
-                    role.save()
-                    .then(()=> res.status(200).json({msg: "Rôle ajouté avec succès !!"}))
-                    .catch((error)=> res.status(401).json({error: error.message}))
-                }
-            })
-            .catch((error)=> res.status(500).json({error: error.message}));
+                Admin.findOne({_id: req.auth.userId})
+                .then((data)=>{
+                    if(data.length == 0){
+                        res.status(404).json({msg: "Cet compte est introuvable , Veuillez vous connecter à nouveau"})
+                        return
+                    }else{
+                        let role = new Role({
+                            libelle:req.body.libelle,
+                            reference:`ROLE${reference}`,
+                            satut:1,
+                            admins:data._id
+                        })
+                        role.save()
+                        .then(()=> res.status(200).json({msg: "Rôle ajouté avec succès !!"}))
+                        .catch((error)=> res.status(401).json({msg: error.message}))
+                    }
+                })
+                .catch((error)=> res.status(500).json({msg: error.message}));
+                })
         }catch (error) {
             console.log(error);
-            res.status(500).json({message: error.massege})
+            res.status(500).json({msg: error.massege})
         }
     }
 
     static async read(req, res){
         try{
-            console.log(req.auth.userId)
-        Admin.findOne({_id:req.auth.userId/*, statut:1*/})
+        Admin.findOne({_id:req.auth.userId, statut:1})
             .then(admin=>{
                 if(admin){
                     Role.find({statut:1})
@@ -84,7 +84,7 @@ class RoleController {
                 }
             })
             .catch((error)=>{
-                res.statut(500);json({error: error.message});
+                res.statut(500);json({msg: error.message});
             })
         }catch(error){
             const msg = `URL non valable`;
@@ -118,7 +118,7 @@ class RoleController {
                 }
             })
             .catch((error)=>{
-                res.statut(500);json({error: error.message});
+                res.statut(500);json({msg: error.message});
             })
         }catch(error){
             const msg = `URL non valable.`;
@@ -141,7 +141,7 @@ class RoleController {
                         })
                         .catch((error)=> {
                             console.log(error);
-                            res.status(404).json({error: error.message});
+                            res.status(404).json({msg: error.message});
                         })
                     }
                     else{
@@ -151,12 +151,12 @@ class RoleController {
                 })
                 .catch(error=> {
                     console.log(error);
-                    res.status(404).json({error: error.message});
+                    res.status(404).json({msg: error.message});
                 })
             })
         } catch (error) {
             console.log(error)
-            res.status(400).json({error})
+            res.status(400).json({msg})
         }
     }
 
@@ -174,7 +174,7 @@ class RoleController {
                         })
                         .catch((error)=> {
                             console.log(error);
-                            res.status(404).json({error: error.message});
+                            res.status(404).json({msg: error.message});
                         })
                     }
                     else{
@@ -184,12 +184,12 @@ class RoleController {
                 })
                 .catch(error=> {
                     console.log(error);
-                    res.status(404).json({error: error.message});
+                    res.status(404).json({msg: error.message});
                 })
             })
         } catch (error) {
             console.log(error);
-            res.status(400).json({error});
+            res.status(400).json({msg});
         }
     }
 }

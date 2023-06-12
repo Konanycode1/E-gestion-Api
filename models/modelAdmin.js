@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Role = require('./modelRole');
 // On définit le schema de model
 const adminSchema = mongoose.Schema(
     {
@@ -21,6 +22,25 @@ const adminSchema = mongoose.Schema(
         password: {
             type: String,
             required: [true,"Veuillez définir le mot de passe de l'admin !"]
+        },
+        modifierPar: {
+            type: String,
+            required: false
+        },
+        role_id:[
+            {type: mongoose.Schema.Types.ObjectId, ref: Role}
+        ],
+        statut:{
+            type: Number,
+            default: 1
+        },
+        createdAt:{
+            type: Date,
+            required: true
+        },
+        updatedAt:{
+            type: Date,
+            required: true
         },
         type:{
             type: String

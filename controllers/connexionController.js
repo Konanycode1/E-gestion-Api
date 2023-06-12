@@ -15,8 +15,8 @@ class ConnexionController{
                     if(!pass) return res.status(401).json({msg:"Mot de passe incorrect !!"})
                     res.status(200).json({
                         employeId:data._id,
-                        status: data.reference,
-                        token: jwt.sign({employeId:data._id, status: data.reference}, "RANDOM_TOKEN_KEY", {expiresIn: 3600*24} )
+                        reference: data.reference,
+                        token: jwt.sign({employeId:data._id, reference: data.reference}, "RANDOM_TOKEN_KEY", {expiresIn: 3600*24} ),
                     })
                  })
                  .catch((error)=> res.status(401).json({error: error.message}))

@@ -59,7 +59,6 @@ class articleController {
             })
             .catch((error)=> res.status(400).json({error: error.message}))
         } catch (error) {
-            console.log(error.message);
             res.status(500).json({message: error.message})
         }
     }
@@ -100,7 +99,6 @@ class articleController {
                         }
                         Article.updateOne({_id: req.params.id},{...article, _id:req.params.id})
                         .then((valid)=>{
-                            console.log(valid)
                             if(valid){
                                 res.status(201).json({msg :"Article modifié !!"})
                             }

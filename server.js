@@ -1,11 +1,11 @@
 
 const express = require('express');
-const Mongoose = require('mongoose');
-
+// const mongoose = require('mongoose');
+const mongodb = require('mongodb')
 const cors = require('cors')
 const app = express();
-app.use(express.json())
-app.use(cors())
+app.use(express.json());
+app.use(cors());
 app.use(express.urlencoded({extended:true}));
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -18,4 +18,4 @@ let port = process.env.PORT || 3000;
 const indexRoute = require('./routes/indexRouter');
 app.use('/api/',indexRoute);
 const {mongoose} = require('./paramConnectDB');
-app.listen(port, ()=>{console.log(`Le server est est bien démarré sur le port ${port}. Ouvrez le lient http://localhost:${port} pour voir le message`)});
+app.listen(port, ()=>{console.log(`Le server est est bien démarré sur le port ${port}. Ouvrez le lient http://localhost:${port} pour voir le message.`)});

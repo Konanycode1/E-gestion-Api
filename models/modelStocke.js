@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const Admin = require('./modelAdmin');
-const Categorie = require('./modelCategorie');
 const stockeSchema = mongoose.Schema(   // On définit le schema de model
     {
         reference: {

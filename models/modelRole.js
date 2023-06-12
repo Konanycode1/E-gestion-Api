@@ -9,7 +9,7 @@ const roleSchema = mongoose.Schema(
         },
         libelle: {
             type: String,
-            required: [true,"Veuillez définir le libellé du r^le !"]
+            required: [true,"Veuillez définir le libellé du rôle !"]
         },
         statut: {
             type: Number,
