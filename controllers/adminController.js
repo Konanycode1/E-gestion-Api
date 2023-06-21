@@ -1,28 +1,29 @@
 const Admin = require('../models/modelAdmin')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
-
-
 class AdminController {
-    static async create(req, res){
+    static async save(req, res){
         try {
+            console.log('++++++++++++++++++++++++++++++++++++++++++',req.body)
             let reference = 100;
             Admin.find({})
             .then(allAdmin=>{ // Cette fonctionnalité permet de générer une terminason unique pour la référence de chaque Admin
                 if(allAdmin.length > 0){
                     reference = Number(allAdmin[allAdmin.length-1].reference.split('MIN')[1])+1; //
                 }
-
                 Admin.findOne({email: req.body.email})
                 .then((data) =>{
                     if(!data){
+
+                        console.log('++++++++++++++++++++++++++++++++++++++++++',req.body)
                         const chiffres = `0123456789`;
                         Admin.findOne({_id: req.auth.userId, statut:1})
                         .then(item=>{
                             if(!item){
                                 res.status(400).json({msg:`Vous n'êtes pas autorisé à éffectuer cette réquette. Veuillez vous connecter`})
                             }else{
-                                if(req.body.telephone.length >= 10 && req.body.telephone.split("").every(item=>chiffres.includes(item))){
+                                
+                                if(req.body >= 10 && req.body.telephone.split("").every(item=>chiffres.includes(item))){
                                     req.body.password = `123456`;
                                     bcrypt.hash(req.body.password, 10)
                                     .then(async hash=>{
@@ -31,10 +32,9 @@ class AdminController {
                                             modifierPar: `${item._id}@${item.nomPrenom}`,
                                             reference: `ADMIN${reference}`,
                                             password: hash,
-                                            createdAt: new Date().toLocaleString('fr-FR', { timeZone: 'UTC' }),
-                                            updatedAt: new Date().toLocaleString('fr-FR', { timeZone: 'UTC' })
+                                            createdAt: new Date(),
+                                            updatedAt: new Date()
                                         });
-                                        
                                         admin.$timestamps();
                                         await admin.save()
                                         .then(resp=>{return res.status(200).json({msg:"Admin ajouté avec succès", data: resp})})
@@ -67,10 +67,6 @@ class AdminController {
                     res.status(401).json({msg: "Email incorrect !!!"})
                 }
                 else{
-                    // bcrypt.hash("root", 10)
-                    // .then(async hash=>{
-                    //     return res.status(200).json({msg:hash})
-                    // })
                  bcrypt.compare(req.body.password, data.password)
                  .then((pass) => {
                     if(!pass) return res.status(401).json({msg:"Mot de passe incorrect !!"})
