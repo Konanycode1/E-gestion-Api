@@ -4,7 +4,6 @@ const jwt = require('jsonwebtoken')
 class AdminController {
     static async save(req, res){
         try {
-            console.log('++++++++++++++++++++++++++++++++++++++++++',req.body)
             let reference = 100;
             Admin.find({})
             .then(allAdmin=>{ // Cette fonctionnalité permet de générer une terminason unique pour la référence de chaque Admin
@@ -14,17 +13,14 @@ class AdminController {
                 Admin.findOne({email: req.body.email})
                 .then((data) =>{
                     if(!data){
-
-                        console.log('++++++++++++++++++++++++++++++++++++++++++',req.body)
                         const chiffres = `0123456789`;
                         Admin.findOne({_id: req.auth.userId, statut:1})
                         .then(item=>{
                             if(!item){
                                 res.status(400).json({msg:`Vous n'êtes pas autorisé à éffectuer cette réquette. Veuillez vous connecter`})
                             }else{
-                                
-                                if(req.body >= 10 && req.body.telephone.split("").every(item=>chiffres.includes(item))){
-                                    req.body.password = `123456`;
+                                if(req.body.telephone.length == 10 && req.body.telephone.split("").every(item=>chiffres.includes(item))){
+                                    req.body.password = `123456`; //
                                     bcrypt.hash(req.body.password, 10)
                                     .then(async hash=>{
                                         let admin =  new Admin({
@@ -35,26 +31,33 @@ class AdminController {
                                             createdAt: new Date(),
                                             updatedAt: new Date()
                                         });
+                                        console.log('Administrateur', req.body)
                                         admin.$timestamps();
                                         await admin.save()
                                         .then(resp=>{return res.status(200).json({msg:"Admin ajouté avec succès", data: resp})})
                                         .catch(er=>{return res.status(400).json({msg:er.message})})
                                     })
-                                    .catch((error)=>{return res.status(400).json({msg:error.message})})
+                                    .catch((error)=>{return res.status(400).json({msg:"Une erreur s'est produite lors de l'insertion, veuillez donc réessayer plus tard !", error:error.message})})
                                 }else{
-                                    return res.status(400).json({msg: "Numéro trop court ou le numéro doit constituer uniquement que des chiffres."});
+                                    return res.status(400).json({msg: "Numéro trop court (il faut exactement 10 chiffres) ou le numéro doit constituer uniquement que des chiffres."});
                                 }
                             }
                         })
+                        .catch((error)=>{return res.status(400).json({msg:"Une erreur s'est produite lors de l'insertion, veuillez donc réessayer plus tard !", error:error.message})})
                     }
                     else{
-                    res.status(401).json({msg:"Cet administrateur est déjà ajouté."})
+                        res.status(401).json({msg:"Cet administrateur est déjà ajouté."})
                     }
                 })
+                .catch(error=>{
+                    res.status(500).json({msg:"Insertion avortée, veuillez réessayer plus tard !!"})
+                })
             })
-            
+            .catch(error=>{
+                res.status(500).json({msg:'Insertion avortée, veuillez réessayer plus tard !!'})
+            })
         } catch (error) {
-            res.status(500).json({msg: error.message})
+            res.status(500).json({msg:'Insertion avortée, veuillez réessayer plus tard !!', error: error.message})
             
         }
     }
