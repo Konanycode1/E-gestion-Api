@@ -1,6 +1,6 @@
-import {model, Schema} from "mongoose";
+const mongoose = require("mongoose");
 
- const registerBoutique = new Schema({
+ const registerBoutique = mongoose.Schema({
     nomBoutique : {type: String, required:true},
     localisation: {type:String,required: true},
     email : {type: String, required:true},
@@ -10,4 +10,4 @@ import {model, Schema} from "mongoose";
     ville: {type: String, required: true},
     password:{type:String, required: true}
 })
-export default model("Boutique", registerBoutique)
+module.exports = mongoose.model("Boutique", registerBoutique)

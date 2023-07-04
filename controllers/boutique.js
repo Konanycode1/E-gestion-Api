@@ -1,13 +1,13 @@
-import registerBoutik from "../models/registerBoutik.js";
+const registerBoutik = require("../models/registerBoutik");
 
 class Boutique {
     static async create(req, res){
         try {
-            const {urllogo} = req.file.filename
+            const urllogo= req.file.filename
             const {nomBoutique,logo, ...body} = req.body
             registerBoutik.findOne({nomBoutique: nomBoutique})
             .then((data)=>{
-                if(!data){
+                if(data){
                     res.status(404).json({msg:"Boutique existe déjà"})
                     return
                 }
@@ -46,4 +46,4 @@ class Boutique {
         }
     }
 }
-export default Boutique
+module.exports = Boutique
