@@ -18,8 +18,8 @@ const Uploaded = require(`../middleware/upload`)
 // les routes
 Router.get('/', IndexController.dashboard);
 
-Router.post('/login1', ConnexionController.loginAdmin); 
-Router.post('/login12', ConnexionController.loginEmploye); 
+Router.post('/loginAdmin', ConnexionController.loginAdmin); 
+Router.post('/loginEmploye', ConnexionController.loginEmploye); 
 
 
 Router.post('/saveAdmin', Uploaded, Auth, AdminController.save);

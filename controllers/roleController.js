@@ -1,4 +1,5 @@
 const Admin = require('../models/modelAdmin');
+const { findOne } = require('../models/modelEmploye');
 const Role = require('../models/modelRole')
 class RoleController {
     static async create(req, res){
@@ -6,32 +7,45 @@ class RoleController {
         try {
             Role.find({})
             .then(allRole=>{
-               
                 if(allRole.length > 0){
                     reference = Number(allRole[allRole.length-1].reference.split('OLE')[1])+1;
                 }
                 Admin.findOne({_id: req.auth.userId})
                 .then((data)=>{
+                    console.log('role', req.auth)
                     if(data.length == 0){
                         res.status(404).json({msg: "Cet compte est introuvable , Veuillez vous connecter à nouveau"})
                         return
                     }else{
-                        let role = new Role({
-                            libelle:req.body.libelle,
-                            reference:`ROLE${reference}`,
-                            satut:1,
-                            admins:data._id
+                        Role.findOne({libelle:req.body.libelle.toUpperCase()})
+                        .then(resp=>{
+                            console.log(resp)
+                            if(!resp){
+                                let role = new Role({
+                                    libelle:req.body.libelle.toUpperCase(),
+                                    reference:`ROLE${reference}`,
+                                    satut:1,
+                                    admins:data._id
+                                })
+                                role.save()
+                                .then(()=> res.status(200).json({msg: "Rôle ajouté avec succès !!"}))
+                                .catch((error)=> res.status(401).json({msg: "Insertion évortée", error: error.message}));
+                            }else{
+                                console.log('Ce rôle est déjà ajouté !');
+                                res.status(204).json({msg:"Ce rôle est déjà ajouté !"});
+                                return
+                            }
                         })
-                        role.save()
-                        .then(()=> res.status(200).json({msg: "Rôle ajouté avec succès !!"}))
-                        .catch((error)=> res.status(401).json({msg: error.message}))
+                        .catch(error=>{
+                            res.status(401).json({msg:'Insertion avortée !!', error: error.message});
+                        })
                     }
                 })
-                .catch((error)=> res.status(500).json({msg: error.message}));
+                .catch((error)=> res.status(500).json({msg:'Insertion avortée !!', error: error.message}));
                 })
         }catch (error) {
             console.log(error);
-            res.status(500).json({msg: error.massege})
+            res.status(500).json({msg:'Insertion avortée !!', error: error.message})
         }
     }
 
