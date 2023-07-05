@@ -23,6 +23,9 @@ const adminSchema = mongoose.Schema(
             type: String,
             required: [true,"Veuillez définir le mot de passe de l'admin !"]
         },
+        photo: {
+            type: String
+        },
         modifierPar: {
             type: String,
             required: false

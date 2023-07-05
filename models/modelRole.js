@@ -18,7 +18,15 @@ const roleSchema = mongoose.Schema(
         },
         admins:[
             {type: mongoose.Schema.Types.ObjectId, ref: Admin}
-        ]
+        ],
+        createdAt:{
+            type: Date,
+            required: true
+        },
+        updatedAt:{
+            type: Date,
+            required: true
+        }
     },
     {
         timesTamps: true

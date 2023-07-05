@@ -27,7 +27,7 @@ Router.put('/updateAdmin', Auth, AdminController.update);
 Router.delete('/deleteAdmin/:id', Auth, AdminController.delete);
 Router.get('/allAdmin', Auth, AdminController.allRecup);
 Router.get('/oneAdmin/:id', Auth, AdminController.recupId); 
-Router.post('/updateForSuperAdmin', Auth, AdminController.updateForSuperAdmin);
+Router.post('/updateForSuperAdmin', Uploaded, Auth, AdminController.updateForSuperAdmin);
 
 Router.post('/createArticle/', Auth, ArticleController.create);
 Router.put('/updateArticle/:id', Auth, ArticleController.update);

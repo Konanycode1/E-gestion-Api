@@ -13,9 +13,11 @@ class AdminController {
                 Admin.findOne({email: req.body.email})
                 .then((data) =>{
                     if(!data){
+                        
                         const chiffres = `0123456789`;
                         Admin.findOne({_id: req.auth.userId, statut:1})
                         .then(item=>{
+                            
                             if(!item){
                                 res.status(400).json({msg:`Vous n'êtes pas autorisé à éffectuer cette réquette. Veuillez vous connecter`})
                             }else{
@@ -23,6 +25,7 @@ class AdminController {
                                     req.body.password = `123456`; //
                                     bcrypt.hash(req.body.password, 10)
                                     .then(async hash=>{
+                                        if(req.file){req.body.photo=`${req.protocol}://${req.get('host')}/${req.file.path}`};
                                         let admin =  new Admin({
                                             ... req.body,
                                             modifierPar: `${item._id}@${item.nomPrenom}`,
@@ -31,15 +34,18 @@ class AdminController {
                                             createdAt: new Date(),
                                             updatedAt: new Date()
                                         });
-                                        console.log('Administrateur', req.body)
-                                        admin.$timestamps();
-                                        await admin.save()
-                                        .then(resp=>{return res.status(200).json({msg:"Admin ajouté avec succès", data: resp})})
-                                        .catch(er=>{return res.status(400).json({msg:er.message})})
+                                        admin.save()
+                                        .then(resp=>{
+                                            console.log('Administrateur', req.body);
+                                            res.status(200).json({msg:"Admin ajouté avec succès", data: resp})
+                                        })
+                                        .catch(error=>{console.log('Error1 ',error) ;res.status(400).json({msg: "Insertion avortée, veuillez donc réessayer pluss tard", error:error.message})})
                                     })
-                                    .catch((error)=>{return res.status(400).json({msg:"Une erreur s'est produite lors de l'insertion, veuillez donc réessayer plus tard !", error:error.message})})
+                                    .catch((error)=>{console.log('°°°°°°°°°°°°°°°°°°°°',error) ; res.status(400).json({msg:"Une erreur s'est produite lors de l'insertion, veuillez donc réessayer plus tard !", error:error.message})})
                                 }else{
-                                    return res.status(400).json({msg: "Numéro trop court (il faut exactement 10 chiffres) ou le numéro doit constituer uniquement que des chiffres."});
+                                    console.log('°°°°°°°°°°°°°°°°°°°°',error) ;
+                                    res.status(400).json({msg: "Numéro trop court (il faut exactement 10 chiffres) ou le numéro doit constituer uniquement que des chiffres."});
+                                    return
                                 }
                             }
                         })
@@ -92,7 +98,7 @@ class AdminController {
         }
     }
 
-    static async updateForSuperAdmin(req,res){
+    static async updateForSuperAdmin(req, res){
         try {
             Admin.findOne({_id: req.auth.userId, statut:1})
             .then(user=>{
@@ -100,12 +106,14 @@ class AdminController {
                 Admin.findOne({_id:req.body.id, statut:1})
                 .then((data)=>{
                     if(data){
-                        let updat = {...req.body, modifierPar: `${user._id}@${user.nomPrenom}`,updatedAt: new Date().toLocaleString('fr-FR', { timeZone: 'UTC' })}
+                        console.log(req.file)
+                        if(req.file){req.body.photo=`${req.protocol}://${req.get('host')}/${req.file.path}`}
+                        let updat = {...req.body, modifierPar: `${user._id}@${user.nomPrenom}`,updatedAt: new Date()}
                         Admin.updateOne({_id: req.body.id},{...updat})
-                        .then(()=>{res.status(200).json({msg: "Modification effectué avec succès"})})
+                        .then((response)=>{ console.log('nnnnnnnnnnnnnnnnnnnnnnnnnnnnn',response); res.status(200).json({msg: "Modification effectué avec succès", data: response})})
                         .catch((error)=> res.status(404).json({msg: error.message}));
                     }
-                    else res.status(401).json({msg: "Compte introuvable !!!"})
+                    else res.status(401).json({msg: "Compte introuvable !!"})
                 })
                 .catch((error)=> res.status(404).json({msg: error.message}))
             })
@@ -136,7 +144,6 @@ class AdminController {
                 else res.status(401).json({msg: "Compte introuvable !!!"})
             })
             .catch((error)=> res.status(404).json({msg: error.message}))
-            
         } catch (error) {
             
         }
@@ -144,11 +151,19 @@ class AdminController {
     
     static async delete (req, res){
         try {
+            console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',req)
             Admin.deleteOne({_id:req.params.id})
-            .then((()=>res.status(201).json({msg:"Admin supprimé !!"})))
-            .catch((error)=> res.status(404).json({msg: error.message}))
+            .then(ok=>{
+                console.log('.........................', ok);
+                res.status(201).json({msg:"Admin supprimé !!", data: ok});
+            })
+            .catch(error=>{
+                console.log('neev error', error)
+                res.status(404).json({msg: "Suppression échouée", error: error.message});
+            })
         } catch (error) {
-            res.status(500).json({msg: error.message})
+            console.log('try catch error', error)
+            res.status(500).json({msg: 'Une erreur est survenue lors du traitement de la suppression', error: error. message})
         }
     }
 

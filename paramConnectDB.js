@@ -33,7 +33,7 @@ mongoose.connect(`mongodb+srv://konanycode:konanycode@cluster0.u2kh1wt.mongodb.n
                         };
                         bcrypt.hash(password, 10)
                         .then(async hash=>{
-                            let admin =  new Admin({ ... body, password: hash, });
+                            let admin =  new Admin({ ... body, password: hash });
                             await admin.save()
                             .then(response=>console.log(response))
                             .catch(error=>console.log(error));

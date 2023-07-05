@@ -5,6 +5,7 @@ class RoleController {
     static async create(req, res){
         let reference = 100;
         try {
+            console.log(req.body)
             Role.find({})
             .then(allRole=>{
                 if(allRole.length > 0){
@@ -12,24 +13,30 @@ class RoleController {
                 }
                 Admin.findOne({_id: req.auth.userId})
                 .then((data)=>{
-                    console.log('role', req.auth)
-                    if(data.length == 0){
+                    if(!data){
                         res.status(404).json({msg: "Cet compte est introuvable , Veuillez vous connecter à nouveau"})
-                        return
                     }else{
+                        console.log(req.body)
                         Role.findOne({libelle:req.body.libelle.toUpperCase()})
                         .then(resp=>{
-                            console.log(resp)
                             if(!resp){
                                 let role = new Role({
                                     libelle:req.body.libelle.toUpperCase(),
                                     reference:`ROLE${reference}`,
                                     satut:1,
-                                    admins:data._id
+                                    admins:data._id,
+                                    createdAt: new Date(),
+                                    updatedAt: new Date(),
                                 })
                                 role.save()
-                                .then(()=> res.status(200).json({msg: "Rôle ajouté avec succès !!"}))
-                                .catch((error)=> res.status(401).json({msg: "Insertion évortée", error: error.message}));
+                                .then(succes=>{
+                                    console.log(11111111, succes)
+                                    res.status(200).json({msg: "Rôle ajouté avec succès !!", data: succes});
+                                })
+                                .catch(error=>{
+                                    console.log('00000000000000000000', error);
+                                    res.status(401).json({msg: "Insertion évortée", error: error});
+                                });
                             }else{
                                 console.log('Ce rôle est déjà ajouté !');
                                 res.status(204).json({msg:"Ce rôle est déjà ajouté !"});
@@ -37,15 +44,19 @@ class RoleController {
                             }
                         })
                         .catch(error=>{
-                            res.status(401).json({msg:'Insertion avortée !!', error: error.message});
+                            console.log('qqqqqqqqqqq',error);
+                            res.status(401).json({msg:'Insertion avortée !!', error: error});
                         })
                     }
                 })
-                .catch((error)=> res.status(500).json({msg:'Insertion avortée !!', error: error.message}));
+                .catch((error)=>{
+                    console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxx',error);
+                    res.status(500).json({msg:'Insertion avortée!!', error: error})
+                });
                 })
         }catch (error) {
-            console.log(error);
-            res.status(500).json({msg:'Insertion avortée !!', error: error.message})
+            console.log('344444444444444444',error);
+            res.status(500).json({msg:'Insertion avortée !!', error: error})
         }
     }
 
@@ -149,7 +160,7 @@ class RoleController {
                 .then((data)=>{
                     if(data){
                         let updat = {...req.body};
-                        Role.updateOne({id: req.body.id},{...updat,_id:req.body._id})
+                        Role.updateOne({id: req.body.id},{...updat,_id:req.body._id, updatedAd: new Date(),})
                         .then((newData)=>{
                             res.status(201).json({msg: "Modification effectué avec succès", newData: newData});
                         })
