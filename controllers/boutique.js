@@ -28,6 +28,13 @@ class Boutique {
             res.static(500).json({error: error.message})
         }
     }
+    static async login(req, res){
+        try {
+            
+        } catch (error) {
+            res.status(500).json({error: error.message})
+        }
+    }
 
     static async readById(req, res){
         const {id} = req.params
